@@ -1,0 +1,46 @@
+refs:
+    - github://dynod/nmk-base/main/src/nmk_base/plugin.yml
+
+config:
+    # Tag(s) to be created
+    tag: v1
+
+    # Python version currently used on Docker file
+    defaultPythonVersion: "3.8"
+
+    # Python versions to be tagged
+    targetPythonVersions:
+        - "3.7"
+        - "3.8"
+        - "3.9"
+        - "3.10"
+
+    # Contribute to python path
+    pythonPath:
+        - ${BASEDIR}/src
+
+    gitIgnoredFiles:
+        - __pycache__
+
+tasks:
+    release:
+        description: Create release tags
+        emoji: birthday_cake
+        builder: nmk_action.release.ReleaseBuilder
+        params: &allParams
+            tag: ${tag}
+            default_version: ${defaultPythonVersion}
+            target_versions: ${targetPythonVersions}
+        input: ${PROJECTDIR}/Dockerfile
+
+    delete:
+        description: Delete release tags
+        emoji: cross_mark
+        builder: nmk_action.release.DeleteBuilder
+        params: *allParams
+
+    push:
+        description: Push release tags
+        emoji: arrow_double_up
+        builder: nmk_action.release.PushBuilder
+        params: *allParams
