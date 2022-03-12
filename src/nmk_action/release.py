@@ -8,7 +8,7 @@ class BaseReleaseBuilder(NmkTaskBuilder):
         self.logger.info(self.task.emoji, f"Running git {' '.join(args)}")
         run_with_logs(["git"] + args, cwd=self.model.config[NmkRootConfig.PROJECT_DIR].value, logger=self.logger)
 
-class ReleaseBuilder(NmkTaskBuilder):
+class ReleaseBuilder(BaseReleaseBuilder):
     def build(self, tag: str, default_version: str, target_versions: List[str]):
         # Prolog: just verify we're not dirty
         assert not self.model.config["gitVersion"].value.endswith("-dirty"), "Repo is dirty, please commit before"
