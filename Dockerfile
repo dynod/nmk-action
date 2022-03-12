@@ -1,5 +1,5 @@
 # Use python image
-FROM python:3.8
+FROM python:3.7
 
 COPY entrypoint.sh /
 
